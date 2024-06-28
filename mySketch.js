@@ -160,9 +160,9 @@ function makeMove(pos){ // relies implicitly on boardList
 		console.log('GAME WON')
 		noLoop()
 		push()
-		stroke(1)
+		stroke(3)
 		fill(255)
-		rect(130,190,260,120)
+		rect(130,190,260,120,5)
 		pop()
 		textSize(30)
 		let winner = player.player == 0 ? '❌' : '⭕' // 1 is X, -1 (or anything else) is O
