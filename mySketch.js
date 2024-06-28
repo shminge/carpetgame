@@ -129,8 +129,14 @@ function mousePressed(){ // this sets lastClick
 // testMove waits for click input and then calls makeMove
 function testMove(){
 	if (lastClick){
-		makeMove(lastClick)
-		lastClick = undefined
+		let index = lastClick.index
+		let row = lastClick.row
+		let col = lastClick.col
+		let b = boardList[index]
+		if (b.entries[row][col] == 0) {
+			makeMove(lastClick)
+			lastClick = undefined
+		}
 	}
 }
 
