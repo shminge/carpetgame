@@ -100,7 +100,8 @@ var player = new Player()
 var lastClick
 
 function setup() {
-	createCanvas(500,500)
+	let canvas = createCanvas(500,500)
+	canvas.parent('sketch-holder')
 	background('rgb(255,246,213)')
 	textAlign(CENTER,CENTER)
 	boardList.push(new Board({x:150,y:150},200))
