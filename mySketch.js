@@ -11,7 +11,7 @@ class Board{
 		for (let i = 0; i < this.type; i++){
 			this.entries.push([])
 			for (let j = 0; j < this.type; j++){
-				this.entries[i].push(random([0]))
+				this.entries[i].push(100 + i*4 + j)
 			}
 		}
 		
@@ -32,10 +32,22 @@ class Board{
 		textSize(30)
 		for (let row = 0; row < this.type; row++){
 			for (let col = 0; col < this.type; col++){
+				push()
 				if (this.entries[row][col] != 0){ // if cell is non-empty
-					let entry = this.entries[row][col] == 1 ? '❌' : '⭕' // 1 is X, -1 (or anything else) is O
+					let entry
+					if (this.entries[row][col] == 1){
+						entry = '❌'
+					} else if (this.entries[row][col] == -1){
+						entry = '⭕'
+					} else if (multi) {
+						fill(0,0,0,30)
+						entry = this.entries[row][col] - 100
+					} else {
+						entry = ''
+					}
 					
 					text(entry, this.tl.x + (col+0.5)*this.cellSize, this.tl.y + (row+0.5)*this.cellSize)
+					pop()
 					
 				} 
 			}
@@ -98,10 +110,10 @@ class Player {
 var boardList = []
 var player = new Player()
 var lastClick
+var multi = false
 
 function setup() {
-	let canvas = createCanvas(500,500)
-	canvas.parent('sketch-holder')
+	createCanvas(500,500)
 	background('rgb(255,246,213)')
 	textAlign(CENTER,CENTER)
 	boardList.push(new Board({x:150,y:150},200))
@@ -133,7 +145,7 @@ function testMove(){
 		let row = lastClick.row
 		let col = lastClick.col
 		let b = boardList[index]
-		if (b.entries[row][col] == 0) {
+		if (b.entries[row][col] >= 100) {
 			makeMove(lastClick)
 			lastClick = undefined
 		}
@@ -169,7 +181,7 @@ function makeMove(pos){ // relies implicitly on boardList
 		strokeWeight(3)
 		stroke('rgb(59,57,57)')
 		fill(255)
-		rect(130,190,260,120,5)
+		rect(130,190,240,120,5)
 		pop()
 		textSize(30)
 		let winner = player.player == 0 ? '❌' : '⭕' // 1 is X, -1 (or anything else) is O
@@ -313,4 +325,11 @@ function drawPlayerLocations(){
 	}
 	
 	
+}
+
+
+function keyPressed(){
+	if (key == 'm'){
+		multi = !multi
+	}
 }
