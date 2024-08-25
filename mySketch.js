@@ -111,6 +111,7 @@ var boardList = []
 var player = new Player()
 var lastClick
 var multi = false
+var space = true
 
 function setup() {
 	createCanvas(500,500)
@@ -126,6 +127,19 @@ function draw() {
 		b.drawBoard()
 	}
 	drawPlayerLocations()
+	if (!(space)) {
+		console.log('GAME WON')
+		noLoop()
+		push()
+		strokeWeight(3)
+		stroke('rgb(59,57,57)')
+		fill(255)
+		rect(130,190,240,120,5)
+		pop()
+		textSize(30)
+		let loser = player.player == 0 ? '❌' : '⭕' // 1 is X, -1 (or anything else) is O
+		text(loser + " can't move", 250, 250)
+	}
 	testMove()
 }
 
@@ -168,6 +182,22 @@ function makeMove(pos){ // relies implicitly on boardList
 	let boardResult  = checkBoard(pos)
 	//console.log(boardResult)
 	
+	space = false
+	
+	let check_board = boardList[player.playerBoard[(player.player + 1)%2]].entries
+	for (let row of check_board){
+		for (let cell of row){
+			if (cell >= 100){
+				space = true
+				break
+			}
+		}
+		if (space){
+			break
+		}
+	}
+	
+	
 	if (boardResult == 'four') {
 		// the game has been won
 		background('rgb(255,246,213)') // redraw winning board
@@ -186,6 +216,7 @@ function makeMove(pos){ // relies implicitly on boardList
 		textSize(30)
 		let winner = player.player == 0 ? '❌' : '⭕' // 1 is X, -1 (or anything else) is O
 		text('won by '+ winner, 250, 250)
+		
 	} else if (boardResult == 'three') {
 		// switch to new board
 		player.nextBoard()
